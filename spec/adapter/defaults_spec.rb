@@ -17,14 +17,14 @@ describe Adapter::Defaults do
     end
 
     it "marshals anything not a string or symbol" do
-      mod.key_for({'testing' => 'this'}).should == %Q(\004\b{\006\"\ftesting\"\tthis)
+      mod.key_for({'testing' => 'this'}).should == %Q(\x04\b{\x06I\"\ftesting\x06:\x06EFI\"\tthis\x06;\x00F)
     end
   end
 
   describe "#encode" do
     it "marshals value" do
       mod.encode(nil).should == "\004\b0"
-      mod.encode({'testing' => 'this'}).should == %Q(\004\b{\006\"\ftesting\"\tthis)
+      mod.encode({'testing' => 'this'}).should == %Q(\x04\b{\x06I\"\ftesting\x06:\x06EFI\"\tthis\x06;\x00F)
     end
   end
 
@@ -34,7 +34,7 @@ describe Adapter::Defaults do
     end
 
     it "returns marshal load if not nil" do
-      mod.decode(%Q(\004\b{\006\"\ftesting\"\tthis)).should == {'testing' => 'this'}
+      mod.decode(%Q(\x04\b{\x06I\"\ftesting\x06:\x06EFI\"\tthis\x06;\x00F)).should == {'testing' => 'this'}
     end
   end
 end
